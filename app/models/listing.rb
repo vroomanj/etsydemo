@@ -12,9 +12,8 @@ class Listing < ActiveRecord::Base
     validates :price, numericality: { greater_than: 0 }
     # validates_attachment_presence :image
     validates_attachment_content_type :image, :content_type => /\Aimage\/.*\Z/
-    # validates_attachment_content_type :image, :content_type => /\Aimage/
-    # validates_attachment_file_name :image, :matches => [/png\Z/, /jpe?g\Z/]
-    # do_not_validate_attachment_file_type :image
+    validates_attachment_file_name :image, :matches => [/png\Z/, /jpe?g\Z/]
+    do_not_validate_attachment_file_type :image
 
     belongs_to :user
 end
