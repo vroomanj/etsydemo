@@ -16,5 +16,6 @@ class Listing < ActiveRecord::Base
     do_not_validate_attachment_file_type :image
 
     belongs_to :user
+    belongs_to :category
     has_many :orders
 end

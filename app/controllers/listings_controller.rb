@@ -10,7 +10,12 @@ class ListingsController < ApplicationController
   # GET /listings
   # GET /listings.json
   def index
-    @listings = Listing.all.order("created_at DESC")
+    if params[:category].blank?
+      @listings = Listing.all.order("created_at DESC")
+    else
+      @category_id = Category.find_by(name: params[:category]).id
+      @listings = Listing.where(category: @category_id).order("created_at DESC")
+    end
   end
 
   # GET /listings/1
@@ -42,10 +47,10 @@ class ListingsController < ApplicationController
         :type => "individual",
         :bank_account => token
         )
-    end
 
-    current_user.recipient = recipient.id
-    current_user.save
+      current_user.recipient = recipient.id
+      current_user.save
+    end
 
     respond_to do |format|
       if @listing.save
@@ -90,7 +95,7 @@ class ListingsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def listing_params
-      params.require(:listing).permit(:name, :description, :price, :image)
+      params.require(:listing).permit(:name, :category_id, :description, :price, :image)
     end
 
     def check_user
